@@ -52,9 +52,7 @@ So instead I followed the instructions on this [Stan Discourse page](https://dis
 
 Follow the instructions on the [httpstan](https://httpstan.readthedocs.io/en/latest/).
 
-These were the commands I used.  You have to edit the encoded identifiers based on the answer from the first command.
-
-Beware that the first command returns lots of compiler warnings, which appear to be safe to ignore.
+These were the commands I used.
 
 Start the service in one shell.
 >python3 -m httpstan
@@ -62,6 +60,8 @@ Start the service in one shell.
 Start another shell and test the service with these commands:
 
 >curl -H "Content-Type: application/json" --data '{"program_code":"parameters {real y;} model {y ~ normal(0,1);}"}' http://localhost:8080/v1/models
+
+You have to edit the encoded identifiers below based on the answer from the first command. Beware that this command returns lots of compiler warnings, which appear to be safe to ignore.
 
 >curl -H "Content-Type: application/json" --data '{"function":"stan::services::sample::hmc_nuts_diag_e_adapt"}' http://localhost:8080/v1/models/3u47k7lm/fits
 
