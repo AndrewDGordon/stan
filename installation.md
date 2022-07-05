@@ -59,14 +59,19 @@ Start the service in one shell.
 
 Start another shell and test the service with these commands:
 
->curl -H "Content-Type: application/json" --data '{"program_code":"parameters {real y;} model {y ~ normal(0,1);}"}' http://localhost:8080/v1/models
+>curl -H "Content-Type: application/json" --data '{"program_code":"data { real mu; } parameters {real y;} model {y ~ normal(mu,1);}"}' http://localhost:8080/v1/models
 
 You have to edit the encoded identifiers below based on the answer from the first command. Beware that this command returns lots of compiler warnings, which appear to be safe to ignore.
 
->curl -H "Content-Type: application/json" --data '{"function":"stan::services::sample::hmc_nuts_diag_e_adapt"}' http://localhost:8080/v1/models/3u47k7lm/fits
+>curl -H "Content-Type: application/json" --data '{"function":"stan::services::sample::hmc_nuts_diag_e_adapt", "data":{"mu":7.0}, "num_samples":10}' http://localhost:8080/v1/models/fz2ieyrd/fits
 
->curl http://localhost:8080/v1/models/3u47k7lm/fits/3uqfegtd > myfit.jsonlines
+>curl http://localhost:8080/v1/models/fz2ieyrd/fits/6rkc5fex > myfit.jsonlines
 
 Go back to the first shell and stop the service with Control-C.
+
+The documentation for these REST APIs is [HTTP-based REST API](https://httpstan.readthedocs.io/en/latest/rest_api.html).
+
+Another example:
+>curl -X POST http://localhost:8080/v1/models/fz2ieyrd/params
 
 That's it.
