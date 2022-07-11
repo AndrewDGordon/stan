@@ -1,6 +1,6 @@
 The purpose of this document is explain how to install an httpstan server, and how to interact with it using Excel for the web.
 
-[A test image](excel-stan.jpg) 
+![A test image](excel-stan.jpg) 
 
 # How to install httpstan on Ubuntu in WSL2 on Windows 11
 
