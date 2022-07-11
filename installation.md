@@ -1,3 +1,5 @@
+The purpose of this document is explain how to install an httpstan server, and how to interact with it using Excel for the web.
+
 # How to install httpstan on Ubuntu in WSL2 on Windows 11
 
 ## Set up WSL
@@ -77,3 +79,72 @@ Another example:
 >curl -X POST http://localhost:8080/v1/models/fz2ieyrd/params
 
 That's it.
+
+# How to use httpstan from Excel for the web
+
+Install these [TypeScript function](https://github.com/microsoft/advanced-formula-environment/blob/main/examples/excel-json.ts) by loading using Script Lab.
+
+Install the following LAMBDAs using the [Advanced Formula Environment](https://aka.ms/get-afe).
+
+```
+// TODO: get this to work with non-numeric and missing entries
+table_to_json = lambda(range,
+let(N,rows(range),
+    json_0, text_to_json("N")&":"&N,
+    r_headers,offset(range,-1,,1),
+    maker, lambda(i,j,
+      let(header, index(r_headers,,j),
+          c_vec, index(range,,j),
+          json_1, TEXTJOIN(",",FALSE,c_vec),
+          json_2, text_to_json(header)&":"&"["&json_1&"]",
+          json_2  )),
+    bindings,MAKEARRAY(1,columns(range),maker),
+    json_3, "{"&json_0&","&TEXTJOIN(",",FALSE,bindings)&"}",
+    json_3
+));
+
+text_to_json = lambda(text,
+let(splits, TEXTSPLIT(text,,CHAR(10)),
+    outcome, textjoin("\n",false,splits),
+    quote(outcome)
+));
+
+quote = lambda(string, char(34)&string&char(34));
+
+health = lambda(
+let(url, "http://localhost:8080/v1/health",
+    outcome, SCRIPTLAB.BLANKSNIPPET.GET_JSON(url),
+    outcome)
+);
+
+model = lambda(code,
+let(url, "http://localhost:8080/v1/models",
+    post_data, "{"& quote("program_code")&":"&text_to_json(code)&"}",
+    outcome, SCRIPTLAB.BLANKSNIPPET.POST_JSON(url,post_data),
+    outcome)
+);
+
+fits = lambda(model, json_data, N,
+let(url, "http://localhost:8080/v1/"&model&"/fits",
+    part_1, quote("function")&":"&quote("stan::services::sample::hmc_nuts_diag_e_adapt"),
+    part_2, quote("data")&":"&json_data,
+    part_3, quote("num_samples")&":"&N,
+    post_data, "{"&part_1&","&part_2&","&part_3&"}",
+    outcome, SCRIPTLAB.BLANKSNIPPET.POST_JSON(url,post_data),
+    outcome)
+);
+
+samples = lambda(fits,
+let(url, "http://localhost:8080/v1/"&fits,
+    outcome, SCRIPTLAB.BLANKSNIPPET.GET_JSON_LINES(url),
+    outcome)
+);
+
+logger = lambda(fit,
+let(lines, fit.lines,
+    topic, fit.lines.topic,
+    logger, filter(lines,topic="logger").values,
+    sample, filter(lines,NOT(ISERROR(lines.values.lp__))).values,
+    hstack(logger,sample.alpha,sample.beta,sample.sigma)
+));
+```
