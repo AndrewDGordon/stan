@@ -59,6 +59,8 @@ Start the service in one shell.
 
 Start another shell and test the service with these commands:
 
+>curl http://localhost:8080/v1/health
+
 >curl -H "Content-Type: application/json" --data '{"program_code":"data { real mu; } parameters {real y;} model {y ~ normal(mu,1);}"}' http://localhost:8080/v1/models
 
 You have to edit the encoded identifiers below based on the answer from the first command. Beware that this command returns lots of compiler warnings, which appear to be safe to ignore.
