@@ -84,9 +84,15 @@ That's it.
 
 # How to use httpstan from Excel for the web
 
-Install these [TypeScript function](https://github.com/microsoft/advanced-formula-environment/blob/main/examples/excel-json.ts) by loading using Script Lab.
 
-Install the following LAMBDAs using the [Advanced Formula Environment](https://aka.ms/get-afe).
+
+Install [Script Lab](https://www.microsoft.com/en-us/garage/profiles/script-lab/) in Excel for the web.
+
+Install these [TypeScript functions](https://github.com/microsoft/advanced-formula-environment/blob/main/examples/excel-json.ts) by loading using Script Lab.
+
+Install [Advanced Formula Environment (AFE)](https://aka.ms/get-afe) in Excel for the web.
+
+Install the following LAMBDAs using AFE.
 
 ```
 // TODO: get this to work with non-numeric and missing entries
