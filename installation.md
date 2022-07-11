@@ -1,5 +1,7 @@
 The purpose of this document is explain how to install an httpstan server, and how to interact with it using Excel for the web.
 
+Beware: these instructions are for a demo. A usable secure solution will require more development.
+
 ![A test image](excel-stan.jpg) 
 
 # How to install httpstan on Ubuntu in WSL2 on Windows 11
@@ -84,7 +86,13 @@ That's it.
 
 # How to use httpstan from Excel for the web
 
+## Running Excel for the web
 
+For demo purposes, the simplest way to be able to call a local http server from Excel for the web is to load Excel using Chrome, and with security protections switched off.
+
+In future, we could build and host an Office add-in that could provide secure access to a local web server.
+
+## Installing TypeScript and LAMBDA functions
 
 Install [Script Lab](https://www.microsoft.com/en-us/garage/profiles/script-lab/) in Excel for the web.
 
